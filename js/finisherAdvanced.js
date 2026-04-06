@@ -1,0 +1,6 @@
+export class FinisherAdvanced{
+    constructor(player,enemies,effects,audio){this.player=player;this.enemies=enemies;this.effects=effects;this.audio=audio;this.active=false;this.timer=0;this.target=null;window.addEventListener("keydown",(e)=>{if(e.key==="f")this.tryFinish();});}
+    tryFinish(){this.enemies.list.forEach(e=>{const dist=Math.hypot(e.x-this.player.x,e.y-this.player.y);if(dist<50&&e.hp<30&&!this.active){this.active=true;this.target=e;this.timer=60;this.audio.playFinisher();this.effects.shake=20;}});}
+    update(){if(!this.active)return; this.player.gameSpeed=0.2; this.timer--; this.player.x+=(this.target.x-this.player.x)*0.3; this.player.y+=(this.target.y-this.player.y)*0.3; if(this.timer<=0){this.target.hp=0;this.active=false;this.player.gameSpeed=1;}}
+    draw(ctx){if(!this.active)return; ctx.fillStyle="rgba(255,0,0,0.5)";ctx.fillRect(0,0,window.innerWidth,window.innerHeight); ctx.fillStyle="white";ctx.font="30px Arial";ctx.fillText("FINISHER!",this.player.x-50,this.player.y-30);}
+}
